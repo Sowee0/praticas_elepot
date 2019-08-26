@@ -1,3 +1,5 @@
+//Código simples para fazer o controle de uma chave em PWM de acordo com o valor de um potênciometro
+
 const int portaSaida = 9;
 const int portaPotenciometro = A0;
 int valorPotenciometro;
