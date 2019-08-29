@@ -1,26 +1,35 @@
 //Código simples para fazer o controle de uma chave em PWM de acordo com o valor de um potênciometro
 
+//Variáveis de porta
 const int portaSaida = 9;
 const int portaDivisorTensao = A0;
 
+//variáveis de controle
 int valorDivisorTensao;
 int valorDesejado;
 int valorPWM;
+
 
 void setPwmFrequencyMEGA2560(int pin, int divisor);
 
 void setup() {
   
-  setPwmFrequencyMEGA2560(9, 2);
+  //Inicializando os pinos e a comunicação serial
   pinMode(portaSaida, OUTPUT);
   Serial.begin(9600);
+
+  //Mudando a frequência do timer interno do arduino que governa o PWM (padrão: 500hz)
+  setPwmFrequencyMEGA2560(9, 2);
+  
 
 }
 
 void loop() {
 
+  //Lendo o valor do divisor de tensão
   valorDivisorTensao = analogRead(portaDivisorTensao);
 
+  //Fazendo um controle usando o feedback do divisor de tensão para alcançar o valor desejado no divisor de tensão
   if(valorDivisorTensao < valorDesejado){
 
     if(valorPWM < 255) //impedindo que o PWM dê overflow dado que seu valor é de 8 bits.
@@ -35,8 +44,10 @@ void loop() {
 
   }
 
+  //Escrevendo o valor decidido pelo controle simples e depois imprimindo-o via serial
   analogWrite(portaSaida, valorPWM);
   Serial.println(valorPWM);
+
 }
 
 void setPwmFrequencyMEGA2560(int pin, int divisor) {
