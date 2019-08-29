@@ -21,6 +21,20 @@ void loop() {
 
   valorDivisorTensao = analogRead(portaDivisorTensao);
 
+  if(valorDivisorTensao < valorDesejado){
+
+    if(valorPWM < 255) //impedindo que o PWM dê overflow dado que seu valor é de 8 bits.
+      valorPWM++;
+
+  }
+  
+  else{
+
+    if(valorPWM > 0) //impedindo que o PWM alcance valores negativos, o que não é permitido.
+      valorPWM--;
+
+  }
+
   analogWrite(portaSaida, valorPWM);
   Serial.println(valorPWM);
 }
