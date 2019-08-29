@@ -1,8 +1,11 @@
 //Código simples para fazer o controle de uma chave em PWM de acordo com o valor de um potênciometro
 
 const int portaSaida = 9;
-const int portaPotenciometro = A0;
-int valorPotenciometro;
+const int portaDivisorTensao = A0;
+
+int valorDivisorTensao;
+int valorDesejado;
+int valorPWM;
 
 void setPwmFrequencyMEGA2560(int pin, int divisor);
 
@@ -16,10 +19,10 @@ void setup() {
 
 void loop() {
 
-  valorPotenciometro = analogRead(portaPotenciometro);
-  analogWrite(portaSaida, valorPotenciometro/4);
-  Serial.println(valorPotenciometro/4);
+  valorDivisorTensao = analogRead(portaDivisorTensao);
 
+  analogWrite(portaSaida, valorPWM);
+  Serial.println(valorPWM);
 }
 
 void setPwmFrequencyMEGA2560(int pin, int divisor) {
