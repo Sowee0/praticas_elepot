@@ -1,13 +1,21 @@
 //Código simples para fazer o controle de uma chave em PWM de acordo com o valor de um potênciometro
 
+
+//Definições referentes ao circuito
+const float tensaoFonte = 15;
+const float valorDesejadoTensao = 12;
+const float relacaoDivisorTensao = 4.3;
+
 //Variáveis de porta
 const int portaSaida = 9;
 const int portaDivisorTensao = A0;
 
 //variáveis de controle
 int valorDivisorTensao;
-int valorDesejado;
+int valorDesejado
 int valorPWM;
+
+float maximaTensaoDivisor;
 
 
 void setPwmFrequencyMEGA2560(int pin, int divisor);
@@ -20,6 +28,11 @@ void setup() {
 
   //Mudando a frequência do timer interno do arduino que governa o PWM (padrão: 500hz)
   setPwmFrequencyMEGA2560(9, 2);
+
+  //Calculando o valor desejado de acordo com a tensao desejada de saida e a relação de R1/R2
+
+  maximaTensaoDivisor = tensaoFonte / relacaoDivisorTensao; 
+  valorDesejado = maximaTensaoDivisor / valorDesejadoTensao; 
   
 
 }
