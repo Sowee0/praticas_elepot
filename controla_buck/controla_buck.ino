@@ -8,8 +8,8 @@ int razaoCiclicaAtual;
 
 //Configurações do modo de operação oscilado
 const int tempoOscilacao = 1000; // em milisegundos
-const int razaoCiclicaUm = 0.5 * 255; // em porcentagem
-const int razaoCiclicaDois = 0.8 * 255; //em porcentagem
+const int razaoCiclicaUm = 0.55 * 255; // em porcentagem
+const int razaoCiclicaDois = 0.65 * 255; //em porcentagem
 
 int modoOperacao = 0;
 int tempoAtual, tempoAnterior;
