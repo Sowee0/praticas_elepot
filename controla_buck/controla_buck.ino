@@ -2,24 +2,74 @@
 
 const int portaSaida = 9;
 const int portaPotenciometro = A0;
-int valorPotenciometro;
+const int pinoBotao = 2;
+const int pinoLED = 13;
+int razaoCiclicaAtual;
+
+//Configurações do modo de operação oscilado
+const int tempoOscilacao = 1000; // em milisegundos
+const int razaoCiclicaUm = 0.5 * 255; // em porcentagem
+const int razaoCiclicaDois = 0.8 * 255; //em porcentagem
+
+int modoOperacao = 0;
+int tempoAtual, tempoAnterior;
 
 void setPwmFrequencyMEGA2560(int pin, int divisor);
 
 void setup() {
   
-  setPwmFrequencyMEGA2560(9, 2);
+  setPwmFrequencyMEGA2560(portaSaida, 2);
   pinMode(portaSaida, OUTPUT);
+  pinMode(pinoLED, OUTPUT);
   Serial.begin(9600);
 
 }
 
 void loop() {
 
-  valorPotenciometro = analogRead(portaPotenciometro);
-  analogWrite(portaSaida, valorPotenciometro/4);
-  Serial.println(valorPotenciometro/4);
+  if(!modoOperacao)
+  {
+  razaoCiclicaAtual = analogRead(portaPotenciometro);
+  razaoCiclicaAtual = razaoCiclicaAtual / 4;
+  }
 
+  else
+  {
+    tempoAtual = millis();
+
+    if(tempoAtual - tempoAnterior > tempoOscilacao){
+
+      if(razaoCiclicaAtual == razaoCiclicaUm)
+        razaoCiclicaAtual = razaoCiclicaDois;
+      else
+        razaoCiclicaAtual = razaoCiclicaUm;
+
+      tempoAnterior = tempoAtual;
+    }
+
+  }
+
+  if(digitalRead(pinoBotao)){
+    modoOperacao = !modoOperacao;
+    Serial.print("Modo de operação atual: ");
+
+    if(!modoOperacao){
+      Serial.println("Potenciometro");
+      digitalWrite(pinoLED, LOW);
+    }
+
+    else{
+      Serial.println("Oscilante");
+      digitalWrite(pinoLED, HIGH);
+    }
+    
+  }
+
+  analogWrite(portaSaida, razaoCiclicaAtual);
+  delay(200);
+
+  Serial.print("D = ");
+  Serial.println(razaoCiclicaAtual);
 }
 
 void setPwmFrequencyMEGA2560(int pin, int divisor) {
