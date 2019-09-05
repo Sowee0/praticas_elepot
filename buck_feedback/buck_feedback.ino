@@ -4,7 +4,7 @@
 //Definições referentes ao circuito
 const float tensaoFonte = 15;
 const float valorDesejadoTensao = 12;
-const float relacaoDivisorTensao = 4.3;
+const float relacaoDivisorTensao = 0.333;
 
 //Variáveis de porta
 const int portaSaida = 9;
@@ -12,7 +12,7 @@ const int portaDivisorTensao = A0;
 
 //variáveis de controle
 int valorDivisorTensao;
-int valorDesejado
+int valorDesejadoDividido;
 int valorPWM;
 
 float maximaTensaoDivisor;
@@ -31,8 +31,8 @@ void setup() {
 
   //Calculando o valor desejado de acordo com a tensao desejada de saida e a relação de R1/R2
 
-  maximaTensaoDivisor = tensaoFonte / relacaoDivisorTensao; 
-  valorDesejado = maximaTensaoDivisor / valorDesejadoTensao; 
+  valorDesejadoDividido = tensaoFonte * relacaoDivisorTensao;
+  valorDesejadoDividido = (valorDesejadoDividido / 5) * 255;
   
 
 }
@@ -43,7 +43,7 @@ void loop() {
   valorDivisorTensao = analogRead(portaDivisorTensao);
 
   //Fazendo um controle usando o feedback do divisor de tensão para alcançar o valor desejado no divisor de tensão
-  if(valorDivisorTensao < valorDesejado){
+  if(valorDivisorTensao < valorDesejadoDividido){
 
     if(valorPWM < 255) //impedindo que o PWM dê overflow dado que seu valor é de 8 bits.
       valorPWM++;
